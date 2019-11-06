@@ -1,7 +1,8 @@
 import json
 import glob
 import os
-import timeit
+
+from exception import MaxFileSizeReachedException
 
 
 class Merger(object):
@@ -13,6 +14,10 @@ class Merger(object):
     self.output_base_dir = output_base_dir
     self.output_file_prefix = output_file_prefix
     self.max_file_size = max_file_size
+
+  def validate_max_size(self):
+  	if len(json.dumps(self.merged_data)) > self.max_file_size:
+  		raise MaxFileSizeReachedException 
 
   def read_files(self, base_dir, prefix):
     filenames = glob.glob(os.path.join(base_dir, prefix + '*.json'))
@@ -30,6 +35,7 @@ class Merger(object):
 							self.merged_data[key].extend(single_data)
 						else:
 							self.merged_data[key] = single_data
+						self.validate_max_size()
       else:
         self.merged_data.update(value)
 
@@ -48,7 +54,7 @@ class Merger(object):
 
 
 def main():
-  merger = Merger('../data', 'data', '../output', 'output')
+  merger = Merger('../data', 'data', '../output', 'output', 350)
   merger.execute()
 
 main()

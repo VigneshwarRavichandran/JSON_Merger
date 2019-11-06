@@ -1,0 +1,2 @@
+class MaxFileSizeReachedException(Exception):
+	pass
