@@ -2,10 +2,10 @@ import json
 import glob
 import os
 
-from exception import MaxFileSizeReachedException
+from .exception import MaxFileSizeReachedException
 
 
-class Merger(object):
+class JSONMerger(object):
   def __init__(self, read_base_dir, read_file_prefix, output_base_dir, output_file_prefix, max_file_size=1024):
     self.data = []
     self.merged_data = {}
@@ -30,12 +30,12 @@ class Merger(object):
     for value in self.data:
       if self.merged_data:
         for key, single_data in value.items():
-        	if isinstance(single_data, list):
-						if key in self.merged_data.keys():
-							self.merged_data[key].extend(single_data)
-						else:
-							self.merged_data[key] = single_data
-						self.validate_max_size()
+          if isinstance(single_data, list):
+            if key in self.merged_data.keys():
+              self.merged_data[key].extend(single_data)
+            else:
+              self.merged_data[key] = single_data
+            self.validate_max_size()
       else:
         self.merged_data.update(value)
 
@@ -43,18 +43,12 @@ class Merger(object):
     if not (os.path.isdir(output_dir)):
     	# Using mkdir creates directory recursively
     	os.makedirs(output_dir)
-  	counter = str(len(self.data) + 1)
-  	with open(os.path.join(output_dir, prefix + counter + '.json'), 'w') as output_file:
-  		json.dump(self.merged_data, output_file)
+    output_file_name = os.path.join(output_dir, '{0}{1}.json'.format(prefix, len(self.data) + 1))
+    with open(output_file_name, 'w') as output_file:
+      json.dump(self.merged_data, output_file, ensure_ascii=False)
+    print('Written successfully to {0}'.format(os.path.abspath(output_file_name)))
 
   def execute(self):
 	  self.read_files(self.read_base_dir, self.read_file_prefix)
 	  self.merge_files()
 	  self.write_file(self.output_base_dir, self.output_file_prefix)
-
-
-def main():
-  merger = Merger('../data', 'data', '../output', 'output', 350)
-  merger.execute()
-
-main()

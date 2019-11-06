@@ -1,2 +1,0 @@
-class MaxFileSizeReachedException(Exception):
-	pass
