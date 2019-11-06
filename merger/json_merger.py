@@ -15,10 +15,19 @@ class JSONMerger(object):
     self.output_file_prefix = output_file_prefix
     self.max_file_size = max_file_size
 
+  """
+  The function validate_max_size is used validate the size of the output file before insertion.
+  JSON object is obtained as string using json.dumps and string len gives the byte size of the file.
+  """
   def validate_max_size(self):
   	if len(json.dumps(self.merged_data)) > self.max_file_size:
   		raise MaxFileSizeReachedException 
 
+  """
+  The function read_files appends the JSON data in self.data
+  glob.glob(os.path.join(base_dir, prefix + '*.json')) obtains all the file starts with the prefix value and 
+  ends with .json
+  """
   def read_files(self, base_dir, prefix):
     filenames = glob.glob(os.path.join(base_dir, prefix + '*.json'))
     for filename in filenames:
@@ -26,6 +35,11 @@ class JSONMerger(object):
         json_file_data = json.load(json_file)
       self.data.append(json_file_data)
 
+  """
+  The function merge_files stores the merged data in self.merged_data
+  The isinstance checks whether the single_data obtained is a list or not.
+  If the key already exsists in the self.merged_data then its extends or else new key is created and value is simply assigned
+  """
   def merge_files(self):
     for value in self.data:
       if self.merged_data:
@@ -39,6 +53,9 @@ class JSONMerger(object):
       else:
         self.merged_data.update(value)
 
+  """
+  The function write_file writes self.merged_data into the output file.
+  """
   def write_file(self, output_dir, prefix):
     if not (os.path.isdir(output_dir)):
     	# Using mkdir creates directory recursively

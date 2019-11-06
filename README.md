@@ -25,7 +25,7 @@ The cli commands were referred from click `https://click.palletsprojects.com/en/
 ```
 $ json_merger --read-base-dir='data' --read-file-prefix='data' --output-base-dir='output' --output-file-prefix='output' --max-file-size=500D 
 ```
-returns "Written successfully to /home/vigneshwar/Documents/probable-octo-succotash1/probable-octo-succotash/output/output4.json" for the above case.
+returns "Written successfully to /home/vigneshwar/Documents/JSON_Merger/output/output4.json" for the above case.
 
 
 
