@@ -26,7 +26,10 @@ class Merger(object):
       if self.merged_data:
         for key, single_data in value.items():
         	if isinstance(single_data, list):
-						self.merged_data[key].extend(single_data)
+						if key in self.merged_data.keys():
+							self.merged_data[key].extend(single_data)
+						else:
+							self.merged_data[key] = single_data
       else:
         self.merged_data.update(value)
 
