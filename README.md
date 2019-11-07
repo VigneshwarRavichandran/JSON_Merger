@@ -16,7 +16,7 @@ $ python setup.py develop
 
 
 ## Get Started
-The main class is JSONMerger which is located in the `JSON_Merger/logic/__init__.py`
+The main class is JSONMerger which is located in the `JSON_Merger/merger/__init__.py`
 The cli commands were referred from click `https://click.palletsprojects.com/en/7.x/`
 
 
